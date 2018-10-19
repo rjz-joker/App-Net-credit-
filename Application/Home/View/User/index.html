@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <include file="Public/head"/>
+    <title>{:C('site_title')}</title>
+    <script src="/Public/js/jquery.form.js"></script>
+    <link rel="stylesheet" href="/Public/css/feedback.css"/>
+</head>
+<body>
+<div class="head">
+    <a href="{:U('Index/index')}" class="back">
+        <i class="fa fa-angle-left"></i>
+    </a>
+    <span>会员中心</span>
+</div>
+<a href="{:U('Auth/index')}">
+    <li class="auth_item">
+        <div class="auth_item_icon">
+            <i class="fa fa-user fa-2x fa-fw icon-b"></i>
+        </div>
+        <div class="auth_item_title">
+            信息认证
+        </div>
+        <div class="auth_item_status">
+            <i class="fa fa-angle-right"></i>
+        </div>
+    </li>
+</a>
+
+    <a href="{:U('User/findpass')}">
+        <li class="auth_item">
+            <div class="auth_item_icon">
+                <i class="fa fa-shield fa-2x fa-fw icon-b"></i>
+            </div>
+            <div class="auth_item_title">
+                修改密码
+            </div>
+            <div class="auth_item_status">
+                <i class="fa fa-angle-right"></i>
+            </div>
+        </li>
+    </a>
+
+<a href="{:U('Page/feedback')}">
+    <li class="auth_item">
+        <div class="auth_item_icon">
+            <i class="fa fa-commenting-o fa-2x fa-fw icon-b"></i>
+        </div>
+        <div class="auth_item_title">
+            问题反馈
+        </div>
+        <div class="auth_item_status">
+            <i class="fa fa-angle-right"></i>
+        </div>
+    </li>
+</a>
+
+    <a href="javascript:;" id="logoutBtn">
+        <li class="auth_item">
+            <div class="auth_item_icon">
+                <i class="fa fa-unlock-alt fa-2x fa-fw icon-b"></i>
+            </div>
+            <div class="auth_item_title">
+                退出登录
+            </div>
+            <div class="auth_item_status">
+                <i class="fa fa-angle-right"></i>
+            </div>
+        </li>
+    </a>
+	
+
+<script>
+    $(function () {
+        $("#logoutBtn").on('click', function () {
+            var url = "{:U('User/logout')}";
+            layer.open({
+                content: '您确定要退出登录吗？'
+                , btn: ['退出', '取消']
+                , yes: function (index) {
+                    window.location.href = url;
+                }
+            });
+        });
+    });
+</script>
+<include file="Public/foot"/>
+</body>
+</html>

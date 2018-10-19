@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <include file="Public/head"/>
+    <title>{:C('site_title')}</title>
+    <script src="/Public/js/jquery.form.js"></script>
+    <link rel="stylesheet" href="/Public/css/feedback.css"/>
+</head>
+<body>
+
+
+<div class="borrow_ul">
+    <notempty name="data">
+        <foreach name="data" item="vo">
+
+            <div class="borrow_li" data-oid="{$vo.oid}">
+                <if condition="$vo['borrow_status'] eq 1">
+                    <!-- 贷款成功 -->
+                    <if condition="$vo['payment_status']">
+                        <!-- 还款成功 -->
+                        <i class="fa fa-calendar-check-o icon"></i>
+                        <else/>
+                        <!-- 尚未还款 -->
+                        <i class="fa fa-calendar-o icon"></i>
+                    </if>
+                    <elseif condition="$vo['borrow_status'] eq 2"/>
+                    <!-- 贷款失败 -->
+                    <i class="fa fa-calendar-times-o icon"></i>
+                    <else/>
+                    <!-- 等待审核 -->
+                    <i class="fa fa-calendar-minus-o icon"></i>
+                </if>
+
+
+                <span class="orderNum">借款订单:{$vo.oid}</span>
+                <div class="info">
+                    <span>金额</span>
+                    <i class="fa fa-cny"></i>
+                    <span class="bm">{$vo.money}</span>
+                    <span>期限</span>
+                    <span class="bm">{$vo.day}</span>
+                    <span>天</span>
+                </div>
+                <span class="order_time">
+					{$vo.create_time|date="Y-m-d H:i",###}
+				</span>
+                <a class="view">
+					<span>   <if condition="$vo.borrow_status == 0 ">待审核</if>
+                     <if condition="$vo.borrow_status == 1 ">待还款</if>
+                        <if condition="$vo.borrow_status == 2 ">已拒绝</if>
+                           <if condition="$vo.borrow_status == 4 ">还款完成</if>
+             
+              
+              
+    
+              
+                   </span>
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+        </foreach>
+		<if condition="$is_show">
+        <div style="width: 100%;text-align: center">
+            <span id="protocol" style="display: none">{$protocol}</span>
+			<span id="t" style="display: none"><?php echo date('Y-m-d',time());?></span>
+          <input type="button" onclick="getPro()" style="margin-right: 10px;background-color: #40A0D4;color: #fff;" value="申请帮还">
+        </div>
+        </if>
+        <else/>
+        <h2 style="text-align: center">无借款数据</h2>
+    </notempty>
+</div>
+
+<div class="page">
+    {$page}
+</div>
+
+<script>
+    $(function () {
+        $(".borrow_ul .borrow_li").on('click', function () {
+            var oid = $(this).attr('data-oid');
+            var url = "{:U('Loan/view',array('oid'=>'oidreplace'))}";
+            url = url.replace('oidreplace', oid);
+            window.location.href = url;
+        });
+    });
+	
+	    function getPro() {
+        var pro = $('#protocol').text();
+        var pro1=pro.replace('time',$('#t').text());
+        var pro2=pro1.replace('uname',"{$user_info.name}");
+        var pro3=pro2.replace('idcard',"{$auth_idcard.idcard}");
+        var pro4=pro3.replace('mobile',"{$user.mobile}");
+        var pro5= pro4.replace('ucid',"{$user.cid}");
+
+
+        layer.open({
+            type: 1,
+            title: '代偿规则',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['380px', '90%'],
+            style: 'margin-left:10%;position:fixed; bottom:0; left:0; width: 80%; height: 100%; padding:10px 0; border:none;overflow-y:scroll',
+            content: "<div style='padding: 0 15px'>"+pro5+"</div>"
+        });
+    }
+	
+</script>
+<include file="Public/foot"/>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>
+    </title>
+    <link href="/Public/css/print.css" rel="stylesheet"/>
+    <script type="text/javascript" src="/Public/js/jquery-1.7.2.min.js"></script>
+    <style type="text/css">
+        table.gridtable {
+            font-family: verdana, arial, sans-serif;
+            font-size: 11px;
+            color: #333333;
+            border-width: 1px;
+            border-color: #666666;
+            border-collapse: collapse;
+            width: 800px;
+            margin: auto;
+            font-size: 14px;
+        }
+
+        table.gridtable th {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #99ccff;
+        }
+
+        table.gridtable td {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+
+        }
+
+        .bj {
+            background-color: #ccffff;
+        }
+    </style>
+
+    <script type="text/javascript">
+        function printPage() {
+            $("#Button3").css("display", "none");
+            window.print();
+            return false;
+        }
+    </script>
+    <!--[if lte IE 9]>
+    <script language=JavaScript>
+        function killErrors() {
+            return true;
+        }
+        window.onerror = killErrors;
+    </script>
+    <![endif]-->
+</head>
+<body>
+
+<div>
+    <table class="gridtable" style="margin-bottom:1px; border:0px;" id="_duoyu">
+        <tr>
+            <php>$time=time();</php>
+            <td colspan="8" style="text-align:center; border:0px;">
+                {$time|date="Y-m-d H:i:s",###}
+                <input id="Button3" type="button" value="打印" onclick="printPage()" class="submit btn yellow"/>
+            </td>
+        </tr>
+    </table>
+    <!-- Table goes in the document BODY -->
+    <table class="gridtable">
+        <tr>
+            <td colspan="8" style="text-align:center; font-size:28px">客户信息({$data.id})</td>
+
+        </tr>
+
+        <tr>
+            <th colspan="8">基本信息</th>
+        </tr>
+        <tr>
+            <td class="bj">客户姓名</td>
+            <td colspan="3">{$data.name}</td>
+            <td class="bj">手机号</td>
+            <td colspan="3">{$data.mobile}</td>
+
+        </tr>
+        <tr>
+
+            <td class="bj">身份证号</td>
+            <td colspan="3">{$data.idcard}</td>
+            <td class="bj">额度</td>
+            <td>{$data.quota}</td>
+            <td class="bj">日息</td>
+            <td>{$data.rate}%</td>
+        </tr>
+
+        <tr>
+            <td class="bj">居住城市</td>
+            <td colspan="3">{$data.live_city}</td>
+
+            <td class="bj">居住时长</td>
+            <td colspan="5">{$data.live_time}</td>
+        </tr>
+
+        <tr>
+            <td class="bj">居住地址</td>
+            <td colspan="8">{$data.live_address}</td>
+        </tr>
+
+        <tr>
+            <th colspan="8">工作信息</th>
+        </tr>
+        <tr>
+            <td class="bj">从事行业</td>
+            <td colspan="3">{$data.work_industry}</td>
+            <td class="bj">工作岗位</td>
+            <td colspan="5">{$data.work_posts}</td>
+
+        </tr>
+
+        <tr>
+            <td class="bj">单位名称</td>
+            <td colspan="3">{$data.work_name}</td>
+            <td class="bj">单位城市</td>
+            <td colspan="5">{$data.work_city}</td>
+        </tr>
+
+        <tr>
+            <td class="bj">单位电话</td>
+            <td colspan="3">{$data.work_tel}</td>
+            <td class="bj">月薪情况</td>
+            <td colspan="5">{$data.month_salary}</td>
+        </tr>
+
+        <tr>
+            <td class="bj">单位地址</td>
+            <td colspan="8">{$data.work_address}</td>
+        </tr>
+
+        <tr>
+            <th colspan="8">紧急联系人</th>
+        </tr>
+        <tr>
+            <td class="bj">关系</td>
+            <td colspan="2">{$data.people_relation_1}</td>
+            <td class="bj">姓名</td>
+            <td colspan="2">{$data.people_name_1}</td>
+            <td class="bj">电话</td>
+            <td colspan="2">{$data.people_tel_1}</td>
+        </tr>
+        <tr>
+            <td class="bj">关系</td>
+            <td colspan="2">{$data.people_relation_2}</td>
+            <td class="bj">姓名</td>
+            <td colspan="2">{$data.people_name_2}</td>
+            <td class="bj">电话</td>
+            <td colspan="2">{$data.people_tel_2}</td>
+        </tr>
+
+        <tr>
+            <th colspan="8">银行卡信息</th>
+        </tr>
+
+        <tr>
+            <td class="bj">银行卡号</td>
+            <td colspan="2">{$data.bank_num}</td>
+            <td class="bj">开户人</td>
+            <td colspan="4">{$data.acct_name}</td>
+        </tr>
+
+        <tr>
+            <td class="bj">开户人身份证</td>
+            <td colspan="7">{$data.id_card}</td>
+        </tr>
+
+        <tr>
+            <th colspan="8">芝麻认证</th>
+        </tr>
+
+        <!--<tr>-->
+            <!--<td class="bj">芝麻认证人</td>-->
+            <!--<td colspan="2">{$zmxy[0]['name']}</td>-->
+            <!--<td class="bj">认证人手机</td>-->
+            <!--<td colspan="4">{$zmxy[0]['mobile']}</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<td class="bj">认证人身份证</td>-->
+            <!--<td colspan="2">{$zmxy[0]['carid']}</td>-->
+            <!--<td class="bj">芝麻信用评分</td>-->
+            <!--<td colspan="2">{$zmxy[0]['list']}</td>-->
+            <!--<td class="bj">行业关注名单</td>-->
+            <!--<td colspan="2">{$zmxy[1]['list']}</td>-->
+        <!--</tr>-->
+
+    </table>
+</div>
+<p>
+    &nbsp;&nbsp;
+</p>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<include file="Public/iframe_head"/>
+
+
+<div class="page-content">
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="table-header">
+                        管理员列表
+                        <if condition="authCheck('Admin/Admin/add',session(C('ADMIN_INFO'))['id'])">
+                        <a href="{:U('Admin/add')}">
+                            <span class="btn btn-success btn-sm tooltip-success" data-rel="tooltip"
+                                  data-placement="left">添加管理员</span>
+                        </a>
+                        </if>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th class="center">
+                                    <label>
+                                        <input type="checkbox" class="ace"/>
+                                        <span class="lbl"></span>
+                                    </label>
+                                </th>
+                                <th>ID</th>
+                                <th>登录用户名</th>
+                                <th>权限组</th>
+                                <th>电话</th>
+                                <th>推荐码</th>
+                                <th>最后登录时间</th>
+                                <th>真实姓名</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+                            <!--数据start-->
+                            <volist name="lists" id="vo">
+                                <tr>
+                                    <td class="center">
+                                        <label>
+                                            <input type="checkbox" class="ace"/>
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+
+                                    <td>
+                                        <a href="#">{$vo.id}</a>
+                                    </td>
+                                    <td>{$vo.username}</td>
+                                    <td>{$vo.group}</td>
+                                    <td class="hidden-480">{$vo.mobile}</td>
+                                    <td>{$vo.recommend}</td>
+                                    <td>{$vo.login_time|date="Y-m-d H:i:s",###}</td>
+                                    <td>{$vo.realname}</td>
+                                    <td>
+                                        <if condition="$vo.username neq 'admin'">
+
+                                            <if condition="authCheck('Admin/Admin/change',session(C('ADMIN_INFO'))['id'])">
+
+                                                <if condition="$vo.status eq 1">
+                                                    <a href="{:U('Admin/change',array('id'=>$vo['id'],'status'=>0))}"
+                                                       class="layui-btn layui-btn-mini layui-btn-primary">禁用</a>
+                                                </if>
+                                                <if condition="$vo.status eq 0">
+                                                    <a href="{:U('Admin/change',array('id'=>$vo['id'],'status'=>1))}"
+                                                       class="layui-btn layui-btn-mini layui-btn-primary">启用</a>
+                                                </if>
+
+                                            </if>
+
+                                            <if condition="authCheck('Admin/Admin/edit',session(C('ADMIN_INFO'))['id'])">
+                                                <a href="{:U('Admin/edit',array('id'=>$vo['id']))}"
+                                                   class="layui-btn layui-btn-mini layui-btn-normal">编辑</a>
+                                            </if>
+
+                                            <if condition="authCheck('Admin/Admin/del',session(C('ADMIN_INFO'))['id'])">
+                                                <a onclick="delMenu('{$vo.id}','{$vo.username}')"
+                                                   class="layui-btn layui-btn-mini layui-btn-danger layui-btn-normal">删除</a>
+                                            </if>
+                                        </if>
+                                    </td>
+                                </tr>
+                            </volist>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+</div><!-- /.page-content -->
+
+<script type="text/javascript">
+    layui.use('form', function () {
+        var form = layui.form();
+    });
+    function delMenu(id, name) {
+        layer.confirm('确定要删除管理员[' + name + ']？', {
+            btn: ['确定', '取消']
+        }, function () {
+            $.post("{:U('Admin/del')}", {'id': id}, function (res) {
+                layer.alert(res.info);
+                location.reload();
+            });
+
+        }, function () {
+
+        });
+    }
+
+    jQuery(function ($) {
+        var oTable1 = $('#sample-table-2').dataTable({
+            "aoColumns": [
+                {"bSortable": false},
+                null, null, null, null, null, null,null,
+                {"bSortable": false}
+            ]
+        });
+
+
+        $('table th input:checkbox').on('click', function () {
+            var that = this;
+            $(this).closest('table').find('tr > td:first-child input:checkbox')
+                .each(function () {
+                    this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+                });
+
+        });
+
+
+        $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+        function tooltip_placement(context, source) {
+            var $source = $(source);
+            var $parent = $source.closest('table')
+            var off1 = $parent.offset();
+            var w1 = $parent.width();
+
+            var off2 = $source.offset();
+            var w2 = $source.width();
+
+            if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2)) return 'right';
+            return 'left';
+        }
+    })
+</script>
+
+
+<div class="resetStatusDiv" style="display: none;min-width: 300px;">
+    <form class="layui-form" action="{:U('User/resetStatus')}" method="post" onsubmit="return changeStatus();">
+        <input type="hidden" name="id" value="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+                <input type="radio" name="status" value="1" title="正常">
+                <input type="radio" name="status" value="0" title="风控">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="">提交修改</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="resetRateDiv" style="display: none;min-width: 300px;margin-top: 15px;">
+    <form class="layui-form" action="{:U('User/resetRate')}" method="post" onsubmit="return changeRate();">
+        <input type="hidden" name="id" value="">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">贷款额度</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="quota" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">用户日息</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="rate" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="">提交修改</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

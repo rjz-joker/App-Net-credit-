@@ -1,0 +1,75 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>芝麻查询</title>
+<link href="{$Think.const.CSS_URL}bootstrap.min.css" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<div class="jumbotron">
+				<h1>
+					<img src="{$Think.const.IMG_URL}tRXwaSFWzAHtvRn.png"/>
+				</h1>
+				<p>
+					请您在下方如实填写身份资料，以便更好查出您的信用情况！
+				</p>
+			</div>
+			<form  action="" method="post">
+				<div class="form-group">
+					 <label for="exampleInputEmail1">姓名</label><input type="text" class="form-control" id="exampleInputEmail1" name="name"/>
+                     <span id="nameerro" style="color:red"></span>
+				</div>
+				<div class="form-group">
+					 <label for="exampleInputPassword1">身份证号码</label><input type="text" class="form-control" id="exampleInputPassword1" name="carid"/>
+                     <span id="cariderro" style="color:red"></span>
+				</div>
+                <div class="form-group">
+					 <label for="exampleInputPassword1">手机号码</label><input type="text" class="form-control" id="exampleInputmobile1" name="mobile"/>
+                     <span id="mobileerro" style="color:red"></span>
+				</div>
+				<input type="submit" class="btn btn-lg btn-block btn-primary" name="submit" onClick="return check()" value="提交"/>
+			</form> 
+		</div>
+	</div>
+</div>
+<script>
+function check(){
+	var name=document.getElementById('exampleInputEmail1').value;
+	var carid=document.getElementById('exampleInputPassword1').value;
+	var mobile=document.getElementById('exampleInputmobile1').value;
+	if(name==""){
+		document.getElementById('nameerro').innerHTML="姓名不能为空";
+		return false;
+		exit;
+	}else{
+		document.getElementById('nameerro').innerHTML="";
+	}
+	if(carid==""){
+		document.getElementById('cariderro').innerHTML="身份证不能为空";
+		return false;
+		exit;
+	}else{
+		document.getElementById('cariderro').innerHTML="";
+	}
+	if(mobile==""){
+		document.getElementById('mobileerro').innerHTML="手机号不能为空";
+		return false;
+		exit;
+	}
+	if(!(/^1[34578]\d{9}$/.test(mobile))){ 
+       document.getElementById('mobileerro').innerHTML="手机号格式不正确";  
+        return false; 
+		exit;
+    }else{
+		document.getElementById('mobileerro').innerHTML="";
+	}
+}
+</script>
+</body>
+</html>

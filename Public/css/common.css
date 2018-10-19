@@ -1,0 +1,71 @@
+* {
+	margin:0;
+	padding:0;
+}
+
+body {font-size:12px; font-family:"微软雅黑"; color:#666;}
+ul,li { list-style:none;}
+ul li { float:left;}
+a { text-decoration:none;}
+.fl { float:left;}
+.fr { float:right;}
+.clear{ clear:both;}
+.hd { margin:0 auto;}
+.bd { margin:0 auto;}
+
+.table { border-left:solid 1px #c0c0c0; border-top:solid 1px #c0c0c0; background:#fff;}
+.table thead{ background:#dcdcdc;  height:37px !important; padding:0 !important; margin:0 !important;}
+.table thead tr {border-right:solid 1px #c0c0c0; height:37px !important; padding:0 !important; margin:0 !important; }
+.table tbody tr { border-right:solid 1px #c0c0c0; border-bottom:solid 1px #c0c0c0; }
+.table th, .table td { border-top:none !important;}
+.btn-top {
+font-weight: bold;
+border: 1px solid #999;
+background: #FFFF99;
+padding: 2px 10px 0px;
+margin: 0 10px;
+height: 22px;
+font-size:14px;
+}
+
+.s-block { display:block; width:46%; height:280px; margin:20px 1%; float:left;}
+.s-block h1 { display:block; height: 29px; font-size:14px; font-style:normal; margin:0; padding:0;
+border: solid 1px #7fa2be;
+line-height: 29px;
+color: #4f6592;
+padding-left: 20px;
+}
+
+.s-block  .ma {
+	margin: 0 !important;
+	border: solid 1px #e7e7e7;
+	background: #f9f9f9;
+	border-top: none;
+	padding: 10px 10px !important;
+	height:240px;
+}
+
+.s-block  .in2 span { float:left;  display:block; width:49%; height:25px; line-height:25px; text-align:left;}
+.s-block  .in3 span { float:left;  display:block; width:33%; height:25px; line-height:25px; text-align:left;}
+
+.idle { background:green !important; color:#fff !important; padding:1px 5px !important; margin-left:10px;}
+.busy { background:red !important; color:#fff !important; padding:1px 5px !important; margin-left:10px;}
+
+.checkbox { display:inline-block !important; padding-left:0 !important; width:auto !important;margin-right:5px;}
+.checkbox input { margin-left:0 !important; }
+.hide { display:none !important;}
+
+.btn-imgs { display:block; width:60px !important; height:60px; border:solid 1px #ccc; background:#fff; font-size:30px; color:#ccc;}
+.upload-img-list { margin:0 !important;}
+.upload-img-list li { display:block; width:60px; height:60px; position:relative; margin-right:5px;}
+.upload-img-list li img{ display:block; width:58px; height:58px;  border:solid 1px #fff; padding:1px;}
+.upload-img-list li i { position:absolute; top:0px; right:0px; background:red; color:#fff; border-radius:5px; display:block; width:14px; height:14px; text-align:center; line-height:14px; font-style:normal; cursor:pointer;}
+
+
+.ui-timepicker-div .ui-widget-header { margin-bottom: 8px;}
+.ui-timepicker-div dl { text-align: left; }
+.ui-timepicker-div dl dt { height: 25px; margin-bottom: -25px; }
+.ui-timepicker-div dl dd { margin: 0 10px 10px 65px; }
+.ui-timepicker-div td { font-size: 90%; }
+.ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
+.ui_tpicker_hour_label,.ui_tpicker_minute_label,.ui_tpicker_second_label,.ui_tpicker_millisec_label,.ui_tpicker_time_label{padding-left:20px}
