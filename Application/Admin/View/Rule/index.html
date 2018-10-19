@@ -1,0 +1,132 @@
+<include file="Public/iframe_head"/>
+
+<body>
+
+<div class="page-content">
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="table-header">
+                        权限列表
+                        <if condition="authCheck('Admin/Rule/add',session(C('ADMIN_INFO'))['id'])">
+                            <a href="{:U('Rule/add')}">
+                                <span class="btn btn-success btn-sm tooltip-success" data-rel="tooltip"
+                                      data-placement="left">添加权限</span>
+                            </a>
+                        </if>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>权限名</th>
+                                <th>链接</th>
+                                <th>级别</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <!--数据start-->
+                            <volist name="lists" id="vo">
+                                <tr>
+                                    <td>
+                                        <span style="display:block;text-indent: {$vo['level']*20}px;"><if
+                                                condition="$vo.pid neq 0">└─</if>{$vo.title}</span>
+                                    </td>
+
+                                    <td>
+                                        {$vo.name}
+                                    </td>
+                                    <td>
+                                        <if condition="$vo.level eq 1"><span style="color: darkred">模块</span></if>
+                                        <if condition="$vo.level eq 2"><span style="color: #00a0e9">控制器</span></if>
+                                        <if condition="$vo.level eq 3"><span style="color:forestgreen">方法</span></if>
+                                    </td>
+                                    <td>
+                                        <div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
+                                            <if condition="authCheck('Admin/Rule/add',session(C('ADMIN_INFO'))['id'])">
+                                                <a class="pink" href="{:U('Rule/add',array('id'=>$vo['id']))}"
+                                                   title="添加子分类">
+                                                    <i class="icon-ok bigger-130">添加子分类</i>
+                                                </a>
+                                            </if>
+
+                                            <if condition="authCheck('Admin/Rule/edit',session(C('ADMIN_INFO'))['id'])">
+                                                <a class="green" href="{:U('Rule/edit',array('id'=>$vo['id']))}"
+                                                   title="修改">
+                                                    <i class="icon-pencil bigger-130">修改</i>
+                                                </a>
+                                            </if>
+
+                                            <if condition="authCheck('Admin/Rule/del',session(C('ADMIN_INFO'))['id'])">
+                                                <a class="red" onclick="delMenu('{$vo.id}','{$vo.title}')" title="删除">
+                                                    <i class="icon-trash bigger-130">删除</i>
+                                                </a>
+                                            </if>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </volist>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+</div><!-- /.page-content -->
+
+<script type="text/javascript">
+    layui.use('form', function () {
+        var form = layui.form();
+    });
+
+    function delMenu(id, title) {
+        layer.confirm('确定要删除权限[' + title + ']？', {
+            btn: ['确定', '取消']
+        }, function () {
+            $.post("{:U('Rule/del')}", {'id': id}, function (res) {
+                layer.alert(res.info);
+                location.reload();
+            });
+
+        }, function () {
+
+        });
+    }
+    jQuery(function ($) {
+//        var oTable1 = $('#sample-table-2').dataTable({
+//            "aoColumns": [
+//                {"bSortable": false},
+//                null, null,
+//                {"bSortable": false}
+//            ]
+//        });
+
+
+
+
+        $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+        function tooltip_placement(context, source) {
+            var $source = $(source);
+            var $parent = $source.closest('table')
+            var off1 = $parent.offset();
+            var w1 = $parent.width();
+
+            var off2 = $source.offset();
+            var w2 = $source.width();
+
+            if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2)) return 'right';
+            return 'left';
+        }
+    })
+</script>
+
+</body>
+</html>

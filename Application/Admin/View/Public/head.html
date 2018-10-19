@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理系统</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- basic styles -->
+    <link href="/Public/assets/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/Public/assets/css/font-awesome.min.css"/>
+
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="/Public/assets/css/font-awesome-ie7.min.css"/>
+    <![endif]-->
+
+    <!-- page specific plugin styles -->
+
+    <!-- fonts -->
+
+    <!--<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300"/>-->
+
+    <!-- ace styles -->
+
+    <link rel="stylesheet" href="/Public/assets/css/ace.min.css"/>
+    <link rel="stylesheet" href="/Public/assets/css/ace-rtl.min.css"/>
+    <link rel="stylesheet" href="/Public/assets/css/ace-skins.min.css"/>
+
+    <link rel="stylesheet" href="/Public/assets/css/ace-ie.min.css"/>
+    <script src="/Public/assets/js/ace-extra.min.js"></script>
+    <script src="/Public/assets/js/html5shiv.js"></script>
+    <script src="/Public/assets/js/respond.min.js"></script>
+    <script src="/Public/assets/js/jquery-2.0.3.min.js"></script>
+    <script src="/Public/assets/js/jquery-1.10.2.min.js"></script>
+    <!--[if !IE]> -->
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='/Public/assets/js/jquery-2.0.3.min.js'>" + "<" + "script>");
+    </script>
+
+    <!-- <![endif]-->
+
+    <!--[if IE]>
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='/Public/assets/js/jquery-1.10.2.min.js'>" + "<" + "script>");
+    </script>
+    <![endif]-->
+
+    <script type="text/javascript">
+        if ("ontouchend" in document) document.write("<script src='/Public/assets/js/jquery.mobile.custom.min.js'>" + "<" + "script>");
+    </script>
+    <script src="/Public/assets/js/bootstrap.min.js"></script>
+    <script src="/Public/assets/js/typeahead-bs2.min.js"></script>
+    <script src="/Public/assets/js/excanvas.min.js"></script>
+    <script src="/Public/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="/Public/assets/js/jquery.ui.touch-punch.min.js"></script>
+    <script src="/Public/assets/js/jquery.slimscroll.min.js"></script>
+    <script src="/Public/assets/js/jquery.easy-pie-chart.min.js"></script>
+    <script src="/Public/assets/js/jquery.sparkline.min.js"></script>
+    <script src="/Public/assets/js/flot/jquery.flot.min.js"></script>
+    <script src="/Public/assets/js/flot/jquery.flot.pie.min.js"></script>
+    <script src="/Public/assets/js/flot/jquery.flot.resize.min.js"></script>
+    <script src="/Public/assets/js/ace-elements.min.js"></script>
+    <script src="/Public/assets/js/ace.min.js"></script>
+</head>
+<body>
+
+<div class="navbar navbar-default" id="navbar">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('navbar', 'fixed')
+        } catch (e) {
+        }
+
+        //轮询查询新消息
+        $(function () {
+            //刚进后台  先查询一次
+            var time1=setInterval(function () {
+                $.post("{:U('Index/index')}",{'n':'1'},function (res) {
+                    $("#count_num").text(res.count_num);
+                    $("#count_num2").text(res.count_num);
+                    $("#loan_num").text(res.loan_num);
+                    $("#user_num").text(res.user_num);
+                    $("#feed_num").text(res.feed_num);
+                    if(res.n == 1){
+                        clearInterval(time1);
+                        return;
+                    }
+                });
+            },1000);
+
+            setInterval(function () {
+                $.post("{:U('Index/index')}",'',function (res) {
+                    $("#count_num").text(res.count_num);
+                    $("#count_num2").text(res.count_num);
+                    $("#loan_num").text(res.loan_num);
+                    $("#user_num").text(res.user_num);
+                    $("#feed_num").text(res.feed_num);
+                });
+            },300000);
+
+
+            var maxTime = {:nl_get_customConfig('overtime')*60}; // seconds
+            var time = maxTime;
+            if(maxTime>0){
+                $('body').on('keydown mousemove mousedown', function(e){
+                    time = maxTime; // reset
+                });
+                var intervalId = setInterval(function(){
+                    time--;
+                    if(time <= 0) {
+                        ShowInvalidLoginMessage();
+                        clearInterval(intervalId);
+                    }
+                }, 1000);
+                function ShowInvalidLoginMessage(){
+                    // 清除session
+                    // 提示用户
+                    // 该干嘛干嘛
+                    window.location="{:U('Public/over')}";
+                }
+
+            }
+
+
+        })
+
+
+    </script>
+
+    <div class="navbar-container" id="navbar-container">
+        <div class="navbar-header pull-left">
+            <a href="#" class="navbar-brand">
+                <small>
+                    <i class="icon-leaf"></i>
+                    后台管理系统 (易贷钱包)
+                </small>
+            </a><!-- /.brand -->
+        </div><!-- /.navbar-header -->
+
+        <div class="navbar-header pull-right" role="navigation">
+            <ul class="nav ace-nav">
+                <li class="purple">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <i class="icon-bell-alt icon-animated-bell"></i>
+                        <span class="badge badge-important" id="count_num"></span>
+                    </a>
+
+                    <ul class="pull-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
+                        <li class="dropdown-header">
+                            <i class="icon-warning-sign"></i>
+                            <span id="count_num2"></span>条新消息
+                        </li>
+
+                        <li>
+                            <a href="{:U('Loan/index')}" target="main">
+                                <div class="clearfix">
+											<span class="pull-left">
+												<i class="btn btn-xs no-hover btn-pink icon-shopping-cart"></i>
+												新订单
+											</span>
+                                    <span class="pull-right badge badge-success">+<span id="loan_num"></span></span>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{:U('User/index')}" target="main">
+                                <div class="clearfix">
+											<span class="pull-left">
+												<i class="btn btn-xs no-hover btn-info icon-twitter"></i>
+												新用户
+											</span>
+                                    <span class="pull-right badge badge-info">+<span id="user_num"></span></span>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{:U('Feed/index')}" target="main">
+                                <div class="clearfix">
+											<span class="pull-left">
+												<i class="btn btn-xs no-hover btn-success icon-comment"></i>
+												反馈信息
+											</span>
+                                    <span class="pull-right badge badge-success">+<span id="feed_num"></span></span>
+                                </div>
+                            </a>
+                        </li>
+
+
+                    </ul>
+                </li>
+
+                <li class="light-blue">
+                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                        <img class="nav-user-photo" src="/Public/assets/avatars/user.jpg"/>
+                        <span class="user-info">
+									<small>欢迎光临,</small>
+									{$Think.session.NorthCMS_AdminUser.username}
+								</span>
+
+                        <i class="icon-caret-down"></i>
+                    </a>
+
+                    <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                        <li>
+
+                        <li>
+                            <a href="{:U('Public/lock')}">
+                                <i class="icon-off"></i>
+                                退出
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul><!-- /.ace-nav -->
+        </div><!-- /.navbar-header -->
+    </div><!-- /.container -->
+</div>
+

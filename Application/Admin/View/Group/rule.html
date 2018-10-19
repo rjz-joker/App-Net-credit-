@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="/Public/css/common.css">
+<link rel="stylesheet" href="/Public/css/thickbox.css">
+<script src="/Public/js/jquery-1.7.2.min.js"></script>
+<body>
+<block name="main">
+    <h1>您正在给"{$group_data['title']}"分配权限</h1>
+    <hr/>
+    <br/>
+    <br/>
+    <br/>
+    <form name="theFrom" action="{:U('Group/rule')}" method="post">
+        <input type="hidden" name="id" value="{$id}">
+        <div class="list-div">
+            <div id="all">
+                <table cellspacing="1" id="list-table">
+                    <table>
+                    <tr>
+                        <php>
+                            foreach($rule_data as $key=>$val){
+                                if($val['pid'] ==0){
+                        </php>
+                        <td width="10%" valign="center" class="first-cell">
+                            <label>
+                                <input type="checkbox" class="checkbox checkitems"
+                                       value="<php> echo $val['id'];</php>" name="rules[]"
+                                <php>if(in_array($val['id'],$auth_ids_arr)){echo "checked='checked'";}</php>
+                                />
+                                <php> echo $val['title'];</php>
+                            </label>
+                        </td>
+
+                        <td width="90%" valign="top" class="first-cell">
+                            <table>
+                                <php>
+                                    foreach($rule_data as $key2=>$val2){
+                                    if($val2['pid'] == $val['id']){
+                                </php>
+                                <tr>
+                                    <td width="10%" style="border-right:1px solid #ccc;border-bottom:1px solid #ccc;">
+                                        <label>
+                                            <input type="checkbox"
+                                                   class="checkbox checkitems onall<php>echo $val['id'];</php>"
+                                                   value="<php> echo $val2['id'];</php>" name="rules[]"
+                                            <php>if(in_array($val2['id'],$auth_ids_arr)){echo
+                                                "checked='checked'";}
+                                            </php>
+                                            />
+                                            <php> echo $val2['title'];</php>
+                                        </label>
+                                    </td>
+                                    <td width="80%" style="border-bottom:1px solid #ccc;">
+                                        <php>
+                                            foreach($rule_data as $key3=>$val3){
+                                            if($val3['pid']==$val2['id']){
+                                        </php>
+                                        <div style="width:200px;float:left;">
+                                            <label>
+                                                <input type="checkbox" title=""
+                                                       class="checkbox onall<php>echo $val['id']</php> onall<php>echo $val3['pid']</php>"
+                                                       value="<php> echo $val3['id'];</php>" name="rules[]"
+                                                <php>if(in_array($val3['id'],$auth_ids_arr)){echo
+                                                    "checked='checked'";}
+                                                </php>
+                                                />
+                                                <php> echo $val3['title'];</php>
+                                            </label>
+                                        </div>
+                                        <php>
+                                            }
+                                            }
+                                        </php>
+                                    </td>
+                                </tr>
+                                <php>
+                                    }
+                                    }
+                                </php>
+                            </table>
+
+                        </td>
+                    </tr>
+                    <php>
+                        }
+                        }
+                    </php>
+            </div>
+            <tr>
+                <td align="center" colspan="3">
+                    <div style="width:180px;margin-top:10px;">
+                        <label style="width:100px;float:left;">
+                            <input type="checkbox" class="checkbox" value="checkbox" id="checkall"/>全选
+                        </label>
+                        <input type="submit" class="button" value=" 保存 " style="background-color: #00b7ee"/>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+            </table>
+        </div>
+    </form>
+
+    <script>
+        $().ready(function () {
+            $(".checkitems").click(function () {
+                $id = $(this).attr("value");
+                var checkedOfAll = $(this).prop("checked");
+                $(".onall" + $id).prop("checked", checkedOfAll);
+            });
+        });
+        //全部选择
+        $('#checkall').click(function () {
+            var checkedOfAll = $("#checkall").prop("checked");
+            $("input[name='rules[]']").prop("checked", checkedOfAll);
+        });
+    </script>
+
+</block>
+</body>
+</html>

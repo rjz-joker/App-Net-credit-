@@ -1,0 +1,95 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="{$Think.const.CSS_URL}bootstrap.min.css" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<div class="jumbotron">
+				<h1>
+					<img src="{$Think.const.IMG_URL}tRXwaSFWzAHtvRn.png"/>
+				</h1>
+				<p>
+					芝麻信用信息授权协议
+				</p>
+			</div>
+			<p>
+				芝麻信用信息授权协议（以下简称“本协议”）由本产品用户（以下简称“甲方”）抚顺市晨阳网络科技有限公司（以下简称“乙方”）签订。如甲方点击选择“同意”此协议将视为授权乙方验证并获取甲方的芝麻信用账户信息，并将视为已阅读并理解本协议的全部内容。<br/>
+
+
+
+<b>一、授权条款</b><br/>
+
+1、甲方在授权乙方验证并获取甲方的芝麻信用信息前，甲方已充分阅读、理解并接受本协议的全部内容，一旦甲方使用本服务，即表示甲方同意遵循本协议之所有约定。<br/>
+
+2、甲方同意，在甲方授权乙方验证并获取甲方的芝麻信用账户信息后，乙方有权通过芝麻信用（中国）网络技术有限公司查看并读取甲方的账户及交易信息。<br/>
+
+<b>二、保密条款</b><br/>
+
+乙方重视对用户隐私的保护。因收集甲方的信息是出于遵守国家法律法规的规定以及向甲方提供服务及提升服务质量的目的，乙方对甲方的芝麻信用账户信息承担保密义务，不会为满足第三方的营销目的而向其出售或出租甲方的任何信息，乙方会在下列情况下才将甲方的信息与第三方共享：<br/>
+
+1、获得甲方的同意或授权。<br/>
+
+2、某些情况下，只有共享甲方的信息，才能提供甲方需要的服务和（或）产品，或处理甲方与他人的交易纠纷或争议。<br/>
+
+3、某些服务和（或）产品由乙方的合作伙伴提供或由乙方与合作伙伴共同提供，乙方会与其共享提供服务和（或）产品需要的信息。<br/>
+
+4、乙方与第三方进行联合推广活动，乙方可能与其共享活动过程中产生的、为完成活动所必要的个人信息，如参加活动的中奖名单、中奖人联系方式等，以便第三方能及时向甲方发放奖品。<br/>
+
+5、根据法律法规的规定及有权机关的要求。<br/>
+
+6、为维护本平台和其他乙方用户的合法权益。<br/>
+
+7、根据法律规定及合理商业习惯，在乙方计划与其他公司合并或被其收购或进行其他资本市场活动（包括但不限于IPO，债券发行）时，以及其他情形下乙方需要接受来自其他主体的尽职调查时，乙方会把甲方的信息提供给必要的主体，但乙方会通过和这些主体签署保密协议等方式要求其对甲方的个人信息采取合理的保密措施。<br/>
+
+<b>三、用户义务及免责声明</b><br/>
+
+1、甲方保证，甲方所授权的芝麻信用账户为甲方本人的账户，不可为他人的账户或虚假账户。<br/>
+
+2、如甲方所授权的芝麻信用账户为他人或虚假账户，乙方将有权暂停或终止与甲方的全部或部分服务协议，并将由甲方承担由此行为所产生的全部法律责任，乙方将不对此承担法律责任。<br/>
+			</p>
+			<a class="btn btn-lg btn-block btn-primary" href="{:U('Auth/index')}" /> 返回填写资料</a>
+		</div>
+	</div>
+</div>
+<script>
+function check(){
+	var name=document.getElementById('exampleInputEmail1').value;
+	var carid=document.getElementById('exampleInputPassword1').value;
+	var mobile=document.getElementById('exampleInputmobile1').value;
+	if(name==""){
+		document.getElementById('nameerro').innerHTML="姓名不能为空";
+		return false;
+		exit;
+	}else{
+		document.getElementById('nameerro').innerHTML="";
+	}
+	if(carid==""){
+		document.getElementById('cariderro').innerHTML="身份证不能为空";
+		return false;
+		exit;
+	}else{
+		document.getElementById('cariderro').innerHTML="";
+	}
+	if(mobile==""){
+		document.getElementById('mobileerro').innerHTML="手机号不能为空";
+		return false;
+		exit;
+	}
+	if(!(/^1[34578]\d{9}$/.test(mobile))){ 
+       document.getElementById('mobileerro').innerHTML="手机号格式不正确";  
+        return false; 
+		exit;
+    }else{
+		document.getElementById('mobileerro').innerHTML="";
+	}
+}
+</script>
+</body>
+</html>

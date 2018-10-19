@@ -1,0 +1,130 @@
+<include file="Public/iframe_head"/>
+
+
+<div class="page-content">
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="table-header">
+                        扣款记录
+                    </div>
+
+                    <div class="table-responsive">
+                        <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>订单ID</th>
+                                <th>扣款状态</th>
+                                <th>连连返回状态码</th>
+                                <th>连连返回信息</th> 
+                                <th>连连支付单号</th> 
+                                <th>连连交易金额</th> 
+								 <th class="hidden-480">
+                                    <i class="icon-time bigger-110 hidden-480"></i>
+                                    扣款操作时间
+                                </th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+                            <!--数据start-->
+                            <volist name="data" id="vo">
+                                <tr>
+                                    <td>
+                                        <a href="#">{$vo.lid}</a>
+                                    </td>
+                                    <td>{$vo['status']==1?'成功':'失败'}</td>
+                                    <td>{$vo.ret_code}</td>
+                                    <td>{$vo.ret_msg}</td>
+                                    <td>{$vo.oid_paybill}</td>
+                                    <td>{$vo.money_order}</td>
+                                    <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+                                </tr>
+                            </volist>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+</div><!-- /.page-content -->
+
+<script type="text/javascript">
+    layui.use('form', function () {
+        var form = layui.form();
+    });
+
+    $(function () {
+
+        $(".delLoan").on('click', function () {
+            var uid = $(this).attr('dataid');
+            layer.confirm('确定要删除该订单吗？', {
+                btn: ['确定', '取消']
+            }, function () {
+                $.ajax({
+                    url: "{:U('Loan/delLoan')}",
+                    type: 'get',
+                    data: {
+                        id: uid
+                    },
+                    success: function (data) {
+                        if (!data.status) {
+                            layer.msg("删除失败!");
+                        } else {
+                            layer.msg("删除订单成功!");
+                            location.reload();
+                        }
+                    }
+                });
+            });
+        });
+    });
+
+
+    jQuery(function ($) {
+        var oTable1 = $('#sample-table-2').dataTable({
+            "aoColumns": [
+                {"bSortable": false},
+                null, null, null, null,null,
+                {"bSortable": false}
+            ]
+        });
+
+
+        $('table th input:checkbox').on('click', function () {
+            var that = this;
+            $(this).closest('table').find('tr > td:first-child input:checkbox')
+                .each(function () {
+                    this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+                });
+
+        });
+
+
+        $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+        function tooltip_placement(context, source) {
+            var $source = $(source);
+            var $parent = $source.closest('table')
+            var off1 = $parent.offset();
+            var w1 = $parent.width();
+
+            var off2 = $source.offset();
+            var w2 = $source.width();
+
+            if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2)) return 'right';
+            return 'left';
+        }
+    })
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+	    <include file="Public/head" />
+	    <title>{:C('site_title')}</title>
+	    <script src="/Public/js/jquery.form.js"></script>
+		<link rel="stylesheet" href="/Public/css/feedback.css" />
+	</head>
+	<body>
+		<div class="head">
+			<a href="javascript:history.back(-1)" class="back">
+				<i class="fa fa-angle-left"></i>
+			</a>
+			<span>问题反馈</span>
+		</div>
+		<div class="content">
+			<form action="{:U('Page/feedback')}" method="post" id="feenback_form">
+				<div class="mobile">
+					<span>联系电话</span> <br />
+<if condition="isLogin()">
+					<php>$user_info=getLoginUser();</php>
+					<input type="hidden" name="mobile" value="{$user_info.mobile}" />
+					<span style="width: 60%;font-size: 16px;color: #8B8989;margin-left: 5%;">{$user_info.mobile}</span>
+<else />
+					<input type="tel" name="mobile" maxlength="11" placeholder="请填写您的手机号" />
+</if>
+				</div>
+				<div class="problem">
+					<span>我要反馈</span> <br />
+					<textarea name="content" rows="8" placeholder="您好，请描述您的问题"></textarea>
+					<span class="wordwrap"><l class="word">0</l>/500</span>
+				</div>
+				<a class="reg_Btn submit" href="javascript:;">提交</a>
+			</form>
+		</div>
+		<script>
+		$(function(){
+			$("input[name='mobile']").on('keyup afterpaste',function(){
+				$(this).val($(this).val().replace(/\D/g,''));
+			});
+			$("a.submit").on('click',function(){
+				if(!isMobile($("input[name='mobile']").val())){
+					layer.open({
+						content:'手机号码不符合规范!',
+						skin:'msg',
+						time:2
+					});
+					return ;
+				}
+				var content = $("textarea[name='content']").val();
+				if(content.lenth == 0){
+					layer.open({
+						content:'反馈内容不能为空!',
+						skin:'msg',
+						time:2
+					});
+					return ;
+				}
+				if(content.lenth > 500){
+					layer.open({
+						content:'反馈内容太长了!',
+						skin:'msg',
+						time:2
+					});
+					return ;
+				}
+				$("#feenback_form").ajaxSubmit({
+					success:function(data){
+						if(!data.status){
+							layer.open({
+								content:data.info,
+								skin:'msg',
+								time:3
+							});
+						}else{
+							layer.open({
+								content:'感谢反馈，我们会及时处理!',
+								btn:'知道了'
+							});
+							setTimeout(function(){
+								window.location.href = "{:U('Index/index')}";
+							},3000);
+						}
+					}
+				});
+				return ;
+			});
+			$(".content .problem textarea").on('input',function(){
+				var t_text = $(this).val();
+				var t_num = t_text.length;
+				if(t_num > 500){
+					t_num = 500;
+					t_text = t_text.substring(0,500);
+					$(this).val(t_text);
+				}
+				$(".content .problem .wordwrap").html('<l class="word">'+t_num+'</l>/500');
+			});
+		});
+		</script>
+		<include file="Public/foot" />
+	</body>
+</html>

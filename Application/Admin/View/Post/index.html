@@ -1,0 +1,120 @@
+<include file="Public/iframe_head"/>
+<script src="/Public/js/jquery.form.js"></script>
+<script src="/Public/js/jquery-1.7.2.min.js"></script>
+<style>
+    .btn {
+        -moz-user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 14px;
+        font-weight: normal;
+        line-height: 1.42857;
+        margin-bottom: 0;
+        padding: 6px 12px;
+        text-align: center;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    .btn-success {
+        background-color: #5cb85c;
+        border-color: #4cae4c;
+        color: #ffffff;
+    }
+</style>
+
+<div id="page-wrapper">
+
+    <div class="row">
+        <div class="col-md-6">
+            <if condition="authCheck('Admin/Post/add',session(C('ADMIN_INFO'))['id'])">
+                <a href="{:U('Post/add')}" class="btn btn-success">添加文章</a>
+            </if>
+        </div>
+
+        <table class="layui-table" lay-skin="line">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>标题</th>
+                <!--<th>类型</th>-->
+                <th>发布时间</th>
+                <th>分类</th>
+                <td>状态</td>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="model" item="v">
+                <tr>
+                    <td>{$v.id}</td>
+                    <td>{$v.title}</td>
+                    <!--<td>-->
+                    <!--<if condition="$v.type eq 1"><span class="label label-success">普通</span>-->
+                    <!--<elseif condition="$v.type eq 2" /><span class="label label-info">置顶</span>-->
+                    <!--<elseif condition="$v.type eq 3" /><span class="label label-primary">热门</span>-->
+                    <!--<elseif condition="$v.type eq 4" /><span class="label label-warning">推荐</span>-->
+                    <!--</if>-->
+                    <!--</td>-->
+                    <td>{$v.time|date="Y/m/d H:i:s",###}</td>
+                    <td>{$v.category_title}</td>
+                    <td>
+                        <if condition="$v.status eq 1">发布
+                            <else/>
+                            <span style="color:red">未发布</span></if>
+                    </td>
+
+                    <td>
+                        <if condition="authCheck('Admin/Post/update',session(C('ADMIN_INFO'))['id'])">
+                            <a href="{:U('Post/update',array('id'=>$v['id']))}">编辑</a> |
+                        </if>
+
+                        <if condition="authCheck('Admin/Post/delete',session(C('ADMIN_INFO'))['id'])">
+                            <a href="{:U('Post/delete',array('id'=>$v['id']))}" style="color:red;"
+                               onclick="javascript:return del('您真的确定要删除吗？\n\n删除后将不能恢复!');">删除</a>
+                        </if>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+        <div class="clearfix"></div>
+        <div id="show_page">
+            {$page}
+        </div>
+
+
+    </div>
+</div>
+<script>
+    function del(msg) {
+//    var msg = "您真的确定要删除吗？\n\n删除后将不能恢复!请确认！";
+        if (confirm(msg) == true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    jQuery(document).ready(function () {
+        //高亮当前选中的导航
+        var myNav = $(".side-nav a");
+        for (var i = 0; i < myNav.length; i++) {
+            var links = myNav.eq(i).attr("href");
+            var myURL = document.URL;
+            var durl = /http:\/\/([^\/]+)\//i;
+            domain = myURL.match(durl);
+            var result = myURL.replace("http://" + domain[1], "");
+            if (links == result) {
+                myNav.eq(i).parents(".dropdown").addClass("open");
+            }
+        }
+    });
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+	    <include file="Public/head" />
+	    <title>{:C('site_title')}</title>
+	    <script src="/Public/js/jquery.form.js"></script>
+		<style>
+		.info_li .title{
+			color: #999999;
+		}
+		.borrow_alert{
+			padding-left: 12px;
+			padding-top: 10px;
+		    background-color: #F0F0F0;
+			min-height: 100px;
+		}
+		.borrow_alert span{
+			color: #1880db;
+			font-weight: bold;
+		}
+		.borrow_alert a{
+			color: #1880db;
+		}
+		.borrow_alert p{
+			margin-top: 8px;
+		}
+		.btn_borrow{
+		    position: absolute;
+		    bottom: 0px;
+		}
+		  .login_Btn2 {
+            background-color: #40A0D4;
+            border-radius: 3px;
+            color: #fff;
+            display: block;
+            font-size: 24px;
+            height: 40px;
+            line-height: 40px;
+            margin: 25px auto;
+            text-align: center;
+            width: 90%;
+        }
+		</style>
+		<link rel="stylesheet" href="/Public/css/feedback.css" />
+	</head>
+	<body>
+	
+		<div class="auth_info">
+			<form action="{:U('Loan/borrow')}" method="post" id="borrowForm">
+				<input type="hidden" name="token" value="{$borrow.token}" />
+				<li class="info_li">
+					<span class="title">借款金额</span>
+					<span>{$borrow.money}元</span>
+				</li>
+				<li class="info_li">
+					<span class="title">借款期限</span>
+					<span>{$borrow.day}天</span>
+				</li>
+				<li class="info_li">
+					<span class="title">手续费用</span>
+					<span>{$borrow.fee}元<h4>(审核管理费:{$borrow.shenhe}元,借款管理费:{$borrow.jiekuan}元,利息:{$borrow.lixi}元)</h4></span>
+					
+					<!-- <i class="fa fa-info-circle fa-2x fa-fw icon-b" style="font-size: 18px;" onclick="show_money()"></i> -->
+				</li>
+				<li class="info_li">
+					<span class="title">到账银行</span>
+					<span class="val">{$borrow.bank}</span>
+				</li>
+				<li class="info_li">
+					<span class="title">到账金额</span>
+					<span>{$borrow.review_money}元</span>
+				</li>
+				<div class="borrow_alert">
+					您需要<span>{$borrow.day}天</span>后，还款<span>{$borrow.money}元</span>
+					<p>
+						<input type="checkbox" name="vehicle" checked="checked" />
+						同意 <a onclick="getPro()"> 《{:C('site_title')}借款协议》 </a>
+					</p>
+					
+				</div>
+				
+			</form>
+
+			<span id="protocol" style="display: none">{$protocol}</span>
+			<span id="t" style="display: none"><?php echo date('Y-m-d',time());?></span>
+			<div>
+					<button class="login_Btn2">确认申请</button>
+				</div>
+			
+			
+		</div>
+		
+		<script>
+            function getPro() {
+                var pro = $('#protocol').text();
+                var pro1=pro.replace('time',$('#t').text());
+                var pro2=pro1.replace('uname',"{$auth_idcard.name}");
+                var pro3=pro2.replace('idcard',"{$auth_idcard.idcard}");
+                var pro4=pro3.replace('mobile',"{$user.mobile}");
+                var pro5= pro4.replace('ucid',"{$user.cid}");
+
+
+                layer.open({
+                    type: 1,
+                    title: '借款合同',
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['380px', '90%'],
+                    style: 'margin-left:10%;position:fixed; bottom:0; left:0; width: 80%; height: 100%; padding:10px 0; border:none;overflow-y:scroll',
+                    content: "<div style='padding: 0 15px'>"+pro5+"</div>"
+                });
+            }
+
+
+			function show_money(){
+				layer.open({
+					content: "<h4>审核管理费:{$borrow.shenhe}元</h4><h4>借款管理费:{$borrow.jiekuan}元</h4><h4>利息:{$borrow.lixi}元</h4>"
+					,btn: '我知道了'
+				});
+			
+			}
+
+			$(function(){
+				$(".login_Btn2").on('click',function(){
+					var check = $("#borrowForm input[type='checkbox']").is(':checked');
+					if(!check){
+						layer.open({
+							content: '请先同意贷款协议'
+							,btn: '我知道了'
+						});
+						return ;
+					}
+					layer.open({
+						type: 2,
+						shadeClose: false
+					});
+					$("#borrowForm").ajaxSubmit({
+						success:function(data){
+							if(!data.status){
+	    						layer.closeAll();
+								layer.open({
+									content:data.info,
+									btn:['确定']
+								});
+							}else{
+								window.location.href=data.url;
+							}
+						}
+					});
+				});
+			});
+		</script>
+		<include file="Public/foot" />
+	</body>
+</html>

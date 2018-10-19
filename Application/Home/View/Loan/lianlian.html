@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <include file="Public/head"/>
+    <title>{:C('site_title')}</title>
+    <script src="/Public/js/jquery.form.js"></script>
+    <link rel="stylesheet" href="/Public/css/feedback.css"/>
+    <style>
+        .user_login {
+            background-color: #fff;
+            margin-top: 10px;
+        }
+
+        body {
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div class="head">
+    <a href="javascript:history.back(-1)" class="back">
+        <i class="fa fa-angle-left"></i>
+    </a>
+    <span>连连支付 - 还款</span>
+</div>
+
+<div class="user_login">
+    <form action=":U('Loan/lianliankefu')" name="llpayment" id="find_form" method="post" target="_self">
+        <input size="30" name="user_id" value="{$user_info.id}" type="hidden"/>
+        <input size="30" name="busi_partner" value="101001" readonly type="hidden"/>
+        <input size="30" name="no_agree" value="{$user_info.agreeno}" type="hidden"/>
+        <input size="30" name="name_goods" value="还款" type="hidden"/>
+        <textarea rows="5" cols="60" name="risk_item" style="display: none">{$json}</textarea>
+
+        <div class="input_item">
+            <span class="pay">订单编号：</span>
+            <input type="hidden" name="no_order" value="{:session('oid')}"/>
+            <span style="width: 60%;font-size: 16px;color: #8B8989;margin-left: 10px;">{:session('oid')}</span>
+        </div>
+        <div class="input_item">
+            <span class="pay">交易金额：</span>
+            <input type="hidden" name="money_order" value="{:session('money')}"/>
+            <span style="width: 60%;font-size: 16px;color: #8B8989;margin-left: 10px;">{:session('money')}</span>
+        </div>
+        <div class="input_item">
+            <span class="pay">订单描述：</span>
+            <input type="hidden" name="info_order" value="用户{$user_info.mobile}还款"/>
+            <span style="width: 60%;font-size: 16px;color: #8B8989;margin-left: 10px;">用户{$user_info.mobile}还款</span>
+        </div>
+        <div class="input_item">
+            <span class="pay">银行卡号：</span>
+            <input type="text" name="card_no" id="card_no" value="{$user_info.bank_num}" placeholder="请输入您的银行卡号" style="width: 60%;font-size: 16px;color: #8B8989;margin-left: 10px;"/>
+        </div>
+        <div class="input_item">
+            <span class="pay">姓　　名：</span>
+            <input type="text" name="acct_name" id="acct_name" value="{$user_info.name}" placeholder="请输入您的真实姓名" style="width: 60%;font-size: 16px;color: #8B8989;margin-left: 10px;"/>
+        </div>
+        <div class="input_item">
+            <span class="pay">身份证号：</span>
+            <input type="text" name="id_no" id="id_no" value="{$user_info.idcard}" placeholder="请输入您的身份证号" style="width: 60%;font-size: 16px;color: #8B8989;margin-left: 10px;"/>
+        </div>
+
+        <button class="reg_Btn" type="submit">确认支付</button>
+    </form>
+	<div style="text-align:center;">
+	<img src="__PUBLIC__/img/lianlian.png"/>
+	</div>
+</div>
+
+<script>
+    $(function () {
+
+        $(".reg_Btn").on('click', function () {
+            var card_no = $("#card_no").val();
+            var acct_name = $("#acct_name").val();
+            var id_no = $("#id_no").val();
+
+            if (!card_no) {
+                layer.open({
+                    content: '请输入银行卡号',
+                    skin: 'msg',
+                    time: 2
+                });
+                return false;
+            }
+
+            if (!acct_name) {
+                layer.open({
+                    content: '请输入真实姓名',
+                    skin: 'msg',
+                    time: 2
+                });
+                return false;
+            }
+
+            if (!id_no) {
+                layer.open({
+                    content: '请输入身份证号',
+                    skin: 'msg',
+                    time: 2
+                });
+                return false;
+            }
+
+        });
+    });
+
+</script>
+
+<include file="Public/foot"/>
+</body>
+</html>
